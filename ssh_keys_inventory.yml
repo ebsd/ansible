@@ -22,6 +22,12 @@
         msg: "An item: {{ item }}"
       with_items: "{{ users_list.stdout_lines }}"
 
+
+    - name: check if /home/item/.ssh/authorized_keys exists
+      stat:
+        path: /home/"{{ item  }}"/.ssh/authorized_keys
+      register: authorized_keys_"{{ item }}"_file
+
     - name: Get users authorized_keys
       shell: 'cat /home/"{{ item  }}"/.ssh/authorized_keys'
       register: read_key
