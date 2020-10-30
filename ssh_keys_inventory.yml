@@ -27,9 +27,16 @@
       register: read_key
       with_items: "{{ users_list.stdout_lines }}"
 
+    - name: check if /root/.ssh/authorized_keys exists
+      stat: 
+        path: /root/.ssh/authorized_keys 
+      register: authorized_keys_root_file
+
+
     - name: Get root authorized_keys
       shell: 'cat /root/.ssh/authorized_keys'
       register: read_rootkey
+      when: authorized_keys_root_file.stat.exists == true
       
     - name: Get users .rhosts
       shell: 'cat /home/"{{ item  }}"/.rhosts'
