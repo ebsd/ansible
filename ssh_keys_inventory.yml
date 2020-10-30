@@ -40,10 +40,12 @@
     - name: Get users .rhosts
       shell: 'cat /home/"{{ item  }}"/.rhosts'
       register: read_rhosts
+      with_items: "{{ users_list.stdout_lines }}"
       
     - name: Get users .shosts
       shell: 'cat /home/"{{ item  }}"/.shosts'
       register: read_shosts
+      with_items: "{{ users_list.stdout_lines }}"
 
     - name: Prints out users authorized_keys
       debug: var=read_key
