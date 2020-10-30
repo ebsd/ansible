@@ -1,0 +1,57 @@
+- hosts: all
+  remote_user: ansible
+  gather_facts: no
+  become: yes
+  become_method: sudo
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+  
+    - name: get user list
+      shell: "getent passwd | awk -F: '{if(($3 >= 1000) && ($3 < 65534)) { print $1 }}'"
+      register: users_list
+
+    - name: print
+      debug: var=users_list.stdout_lines
+
+    - name: "Test loop through list from a variable"
+      debug:
+        msg: "An item: {{ item }}"
+      with_items: "{{ users_list.stdout_lines }}"
+
+    - name: Get users authorized_keys
+      shell: 'cat /home/"{{ item  }}"/.ssh/authorized_keys'
+      register: read_key
+      with_items: "{{ users_list.stdout_lines }}"
+
+    - name: Get root authorized_keys
+      shell: 'cat /root/.ssh/authorized_keys'
+      register: read_rootkey
+      
+    - name: Get users .rhosts
+      shell: 'cat /home/"{{ item  }}"/.rhosts'
+      register: read_rhosts
+      
+    - name: Get users .shosts
+      shell: 'cat /home/"{{ item  }}"/.shosts'
+      register: read_shosts
+
+    - name: Prints out users authorized_keys
+      debug: var=read_key
+
+    - name: Prints out root authorized_keys
+      debug: var=read_rootkey
+      
+    - name: Prints out .rhosts
+      debug: var=read_rhosts
+
+	- name: Prints out .shosts
+      debug: var=read_shosts
+
+	- name: write root authorized_keys 
+      local_action: copy content="{{ read_rootkey.stdout }}" dest="auth_keys-root.log"
+
+    - name: write users authorized_keys 
+      local_action: copy content="{{ read_key }}" dest="auth_keys.log"
