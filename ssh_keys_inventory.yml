@@ -48,10 +48,10 @@
     - name: Prints out .rhosts
       debug: var=read_rhosts
 
-	- name: Prints out .shosts
+    - name: Prints out .shosts
       debug: var=read_shosts
 
-	- name: write root authorized_keys 
+    - name: write root authorized_keys 
       local_action: copy content="{{ read_rootkey.stdout }}" dest="auth_keys-root.log"
 
     - name: write users authorized_keys 
