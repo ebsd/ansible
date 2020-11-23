@@ -32,11 +32,11 @@
 #    - name: print 
 #      debug: var=authorized_keys_user_file
 
-#    - name: Get users authorized_keys
-#      shell: 'cat /home/"{{ item  }}"/.ssh/authorized_keys'
-#      register: read_key
-#      with_items: "{{ users_list.stdout_lines }}"
-#      when: authorized_keys_user_file.stat.exists == true
+    - name: Get users authorized_keys
+      shell: 'cat /home/{{ item  }}/.ssh/authorized_keys'
+      register: read_key
+      #with_items: "{{ users_list.stdout_lines }}"
+      when: authorized_keys_user_file.stat.exists == true
 
     - name: check if /root/.ssh/authorized_keys exists
       stat: 
