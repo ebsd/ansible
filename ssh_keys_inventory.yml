@@ -23,11 +23,11 @@
       with_items: "{{ users_list.stdout_lines }}"
 
 
-    - name: check if /home/item/.ssh/authorized_keys exists
-      stat:
-        path: /home/"{{ item  }}"/.ssh/authorized_keys
-      register: authorized_keys_user_file
-      with_items: "{{ users_list.stdout_lines }}"
+#    - name: check if /home/item/.ssh/authorized_keys exists
+#      stat:
+#        path: /home/"{{ item  }}"/.ssh/authorized_keys
+#      register: authorized_keys_user_file
+#      with_items: "{{ users_list.stdout_lines }}"
 
 #    - name: Get users authorized_keys
 #      shell: 'cat /home/"{{ item  }}"/.ssh/authorized_keys'
@@ -45,32 +45,32 @@
       register: read_rootkey
       when: authorized_keys_root_file.stat.exists == true
       
-    - name: Get users .rhosts
-      shell: 'cat /home/"{{ item  }}"/.rhosts'
-      register: read_rhosts
-      with_items: "{{ users_list.stdout_lines }}"
+#    - name: Get users .rhosts
+#      shell: 'cat /home/"{{ item  }}"/.rhosts'
+#      register: read_rhosts
+#      with_items: "{{ users_list.stdout_lines }}"
       
-    - name: Get users .shosts
-      shell: 'cat /home/"{{ item  }}"/.shosts'
-      register: read_shosts
-      with_items: "{{ users_list.stdout_lines }}"
+#    - name: Get users .shosts
+#      shell: 'cat /home/"{{ item  }}"/.shosts'
+#      register: read_shosts
+#      with_items: "{{ users_list.stdout_lines }}"
 
-    - name: Prints out users authorized_keys
-      debug: var=read_key
+#    - name: Prints out users authorized_keys
+#      debug: var=read_key
 
-    - name: Prints out root authorized_keys
-      debug: var=read_rootkey
-      when: authorized_keys_root_file.stat.exists == true
+#    - name: Prints out root authorized_keys
+#      debug: var=read_rootkey
+#      when: authorized_keys_root_file.stat.exists == true
       
-    - name: Prints out .rhosts
-      debug: var=read_rhosts
+#    - name: Prints out .rhosts
+#      debug: var=read_rhosts
 
-    - name: Prints out .shosts
-      debug: var=read_shosts
+#    - name: Prints out .shosts
+#      debug: var=read_shosts
 
     - name: write root authorized_keys 
       local_action: copy content="{{ read_rootkey.stdout }}" dest="/tmp/auth_keys-root.log"
       when: authorized_keys_root_file.stat.exists == true
 
-    - name: write users authorized_keys 
-      local_action: copy content="{{ read_key }}" dest="/tmp/auth_keys.log"
+#    - name: write users authorized_keys 
+#      local_action: copy content="{{ read_key }}" dest="/tmp/auth_keys.log"
