@@ -25,7 +25,7 @@
 
     - name: check if /home/item/.ssh/authorized_keys exists
       stat:
-        path: /home/"{{ item  }}"/.ssh/authorized_keys
+        path: /home/{{ item  }}/.ssh/authorized_keys
       register: authorized_keys_user_file
       with_items: "{{ users_list.stdout_lines }}"
 
