@@ -17,8 +17,8 @@
       shell: "getent passwd | awk -F: '{if(($3 >= 1000) && ($3 < 65534)) { print $1 }}'"
       register: users_list
 
-    - name: print user list
-      debug: var=users_list.stdout_lines
+#    - name: print user list
+#      debug: var=users_list.stdout_lines
 
 ##
 ## users authorized_keys
@@ -41,8 +41,8 @@
       with_items: "{{ authorized_keys_user_file.results }}"
       when: item.stat.exists == true
 
-    - name: Prints out users authorized_keys
-      debug: var=read_key
+#    - name: Prints out users authorized_keys
+#      debug: var=read_key
 
 ##
 ## root authorized_keys
@@ -58,8 +58,8 @@
       register: read_rootkey
       when: authorized_keys_root_file.stat.exists == true
 
-    - name: Prints out root authorized_keys
-      debug: var=read_rootkey
+#    - name: Prints out root authorized_keys
+#      debug: var=read_rootkey
 
 ##
 ## .rhosts
