@@ -14,13 +14,13 @@
       shell: "getent passwd | awk -F: '{if(($3 >= 1000) && ($3 < 65534)) { print $1 }}'"
       register: users_list
 
-    - name: print
+    - name: print user list
       debug: var=users_list.stdout_lines
 
-    - name: "Test loop through list from a variable"
-      debug:
-        msg: "An item: {{ item }}"
-      with_items: "{{ users_list.stdout_lines }}"
+#    - name: "Test loop through list from a variable"
+#      debug:
+#        msg: "An item: {{ item }}"
+#      with_items: "{{ users_list.stdout_lines }}"
 
 
     - name: check if /home/item/.ssh/authorized_keys exists
@@ -29,8 +29,8 @@
       register: authorized_keys_user_file
       with_items: "{{ users_list.stdout_lines }}"
 
-    - name: print
-      debug: var=authorized_keys_user_file
+#    - name: print 
+#      debug: var=authorized_keys_user_file
 
 #    - name: Get users authorized_keys
 #      shell: 'cat /home/"{{ item  }}"/.ssh/authorized_keys'
@@ -71,9 +71,9 @@
 #    - name: Prints out .shosts
 #      debug: var=read_shosts
 
-    - name: write root authorized_keys 
-      local_action: copy content="{{ read_rootkey.stdout }}" dest="/tmp/auth_keys-root.log"
-      when: authorized_keys_root_file.stat.exists == true
+#    - name: write root authorized_keys 
+#      local_action: copy content="{{ read_rootkey.stdout }}" dest="/tmp/auth_keys-root.log"
+#      when: authorized_keys_root_file.stat.exists == true
 
 #    - name: write users authorized_keys 
 #      local_action: copy content="{{ read_key }}" dest="/tmp/auth_keys.log"
