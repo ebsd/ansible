@@ -144,6 +144,24 @@
 #      debug: var=read_etc_shosts_equiv
 
 
+##
+## /etc/ssh/ssh_known_hosts
+##
+
+      # vérifier la présence du fichier shosts dans le home
+    - name: check if /etc/ssh/ssh_known_hosts exists
+      stat:
+        path: /etc/ssh/ssh_known_hosts
+      register: ssh_known_hosts_file
+
+      # obtenir le contenu du fichier
+    - name: Get /etc/ssh/ssh_known_hosts content
+      shell: 'cat /etc/ssh/ssh_known_hosts'
+      register: read_ssh_known_hosts
+      when: ssh_known_hosts_file.stat.exists == true
+
+#    - name: Prints out .shosts
+#      debug: var=read_etc_shosts_equiv
 
 #    - name: write root authorized_keys 
 #      local_action: copy content="{{ read_rootkey.stdout }}" dest="/tmp/auth_keys-root.log"
