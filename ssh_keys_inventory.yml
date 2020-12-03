@@ -65,43 +65,83 @@
 ## .rhosts
 ##
 
-#      # vérifier la présence du fichier rhosts dans le home
-#    - name: check if /home/item/.rhosts exists
-#      stat:
-#        path: /home/{{ item  }}/.rhosts
-#      register: dot_rhosts_user_file
-#      with_items: "{{ users_list.stdout_lines }}"
-#      
-#      # obtenir le contenu du fichier .rhosts 
-#    - name: Get users .rhosts 
-#      shell: 'cat {{ item.stat.path  }}'
-#      register: read_key
-#      with_items: "{{ dot_rhosts_user_file.results }}"
-#      when: item.stat.exists == true
+      # vérifier la présence du fichier rhosts dans le home
+    - name: check if /home/item/.rhosts exists
+      stat:
+        path: /home/{{ item  }}/.rhosts
+      register: dot_rhosts_user_file
+      with_items: "{{ users_list.stdout_lines }}"
+
+      # obtenir le contenu du fichier .rhosts
+    - name: Get .rhosts content
+      shell: 'cat {{ item.stat.path  }}'
+      register: read_rhosts
+      with_items: "{{ dot_rhosts_user_file.results }}"
+      when: item.stat.exists == true
 
 #    - name: Prints out .rhosts
 #      debug: var=read_rhosts
-      
+
 ##
 ## .shosts
 ##
 
-#      # vérifier la présence du fichier shosts dans le home
-#    - name: check if /home/item/.shosts exists
-#      stat:
-#        path: /home/{{ item  }}/.shosts
-#      register: dot_shosts_user_file
-#      with_items: "{{ users_list.stdout_lines }}"
-#      
-#      # obtenir le contenu du fichier .shosts 
-#    - name: Get users .shosts 
-#      shell: 'cat {{ item.stat.path  }}'
-#      register: read_key
-#      with_items: "{{ dot_shosts_user_file.results }}"
-#      when: item.stat.exists == true
+      # vérifier la présence du fichier shosts dans le home
+    - name: check if /home/item/.shosts exists
+      stat:
+        path: /home/{{ item  }}/.shosts
+      register: dot_shosts_user_file
+      with_items: "{{ users_list.stdout_lines }}"
+
+      # obtenir le contenu du fichier .shosts
+    - name: Get .shosts content
+      shell: 'cat {{ item.stat.path  }}'
+      register: read_shosts
+      with_items: "{{ dot_shosts_user_file.results }}"
+      when: item.stat.exists == true
 
 #    - name: Prints out .shosts
 #      debug: var=read_shosts
+
+
+##
+## /etc/hosts.equiv
+##
+
+      # vérifier la présence du fichier shosts dans le home
+    - name: check if /etc/hosts.equiv exists
+      stat:
+        path: /etc/hosts.equiv
+      register: etc_hosts_equiv_file
+
+      # obtenir le contenu du fichier
+    - name: Get /etc/hosts.equiv content
+      shell: 'cat /etc/hosts.equiv'
+      register: read_etc_hosts_equiv
+      when: etc_hosts_equiv_file.stat.exists == true
+
+#    - name: Prints out .shosts
+#      debug: var=read_etc_hosts_equiv
+
+
+##
+## /etc/shosts.equiv
+##
+
+      # vérifier la présence du fichier shosts dans le home
+    - name: check if /etc/shosts.equiv exists
+      stat:
+        path: /etc/shosts.equiv
+      register: etc_shosts_equiv_file
+
+      # obtenir le contenu du fichier
+    - name: Get /etc/shosts.equiv content
+      shell: 'cat /etc/shosts.equiv'
+      register: read_etc_shosts_equiv
+      when: etc_shosts_equiv_file.stat.exists == true
+
+#    - name: Prints out .shosts
+#      debug: var=read_etc_shosts_equiv
 
 
 
